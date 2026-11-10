@@ -2,6 +2,10 @@
 import { getCollection } from "astro:content";
 import BaseLayout from "../layouts/BaseLayout.astro";
 import { publishedPosts } from "../lib/collections";
+import {
+  githubRepositories,
+  githubRepositoryPath,
+} from "../data/github-repos";
 
 const solutions = publishedPosts(await getCollection("solutions"));
 const projects = publishedPosts(await getCollection("projects"));
@@ -9,6 +13,15 @@ const notes = publishedPosts(await getCollection("notes"));
 const journal = publishedPosts(await getCollection("journal"));
 
 const documents = [
+  ...githubRepositories.map((repository) => ({
+    kind: repository.kind === "troubleshooting" ? "GitHub 問題紀錄" : "GitHub 專案",
+    title: repository.title,
+    description: repository.description,
+    tags: [repository.language, ...repository.topics].filter(Boolean),
+    url: githubRepositoryPath(repository),
+    date: repository.pushedAt,
+    body: repository.readme.replace(/```[\s\S]*?```/g, " ").slice(0, 2000),
+  })),
   ...solutions.map((entry) => ({
     kind: "Problem & Solutions",
     title: entry.data.title,

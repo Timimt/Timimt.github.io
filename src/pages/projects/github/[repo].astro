@@ -1,0 +1,66 @@
+---
+import ArticleLayout from "../../../layouts/ArticleLayout.astro";
+import {
+  githubRepositories,
+  githubRepositoryPath,
+  type GithubRepository,
+} from "../../../data/github-repos";
+import { readingTime } from "../../../lib/collections";
+import { extractHeadings } from "../../../lib/headings";
+import { renderGithubMarkdown } from "../../../lib/github-markdown";
+
+export function getStaticPaths() {
+  return githubRepositories.map((repository) => ({
+    params: { repo: repository.name },
+    props: { repository },
+  }));
+}
+
+const { repository } = Astro.props as { repository: GithubRepository };
+const readmeHtml = await renderGithubMarkdown(
+  repository.readme,
+  repository.url,
+  repository.defaultBranch,
+);
+const headings = extractHeadings(repository.readme);
+const related = githubRepositories
+  .filter((item) => item.name !== repository.name && item.kind === repository.kind)
+  .slice(0, 2)
+  .map((item) => ({
+    title: item.title,
+    description: item.description,
+    url: githubRepositoryPath(item),
+    kind: item.kind === "troubleshooting" ? "問題紀錄" : "Repository",
+  }));
+---
+
+<ArticleLayout
+  title={repository.title}
+  description={repository.description}
+  pubDate={new Date(repository.pushedAt)}
+  tags={[repository.language, ...repository.topics].filter(Boolean) as string[]}
+  kind={repository.kind === "troubleshooting" ? "GitHub 問題紀錄" : "GitHub Repository"}
+  toc={headings}
+  tagBase="/projects"
+  readingTime={readingTime(repository.readme)}
+  backHref={repository.kind === "troubleshooting" ? "/solutions" : "/projects"}
+  backLabel={repository.kind === "troubleshooting" ? "回到問題紀錄" : "回到專案列表"}
+  related={related}
+  repository={repository.url}
+  links={
+    repository.homepage
+      ? [{ label: "專案網站", url: repository.homepage }]
+      : []
+  }
+>
+  <div class="note-box">
+    這篇文章的內容會在網站建置時從 GitHub Repository 同步。最後推送時間：
+    {new Intl.DateTimeFormat("zh-TW", {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+      timeZone: "Asia/Taipei",
+    }).format(new Date(repository.pushedAt))}
+  </div>
+  <Fragment set:html={readmeHtml} />
+</ArticleLayout>

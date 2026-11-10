@@ -3,6 +3,10 @@ import { getCollection } from "astro:content";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import { byNewest, publishedPosts, solutionCategoryLabel } from "../../lib/collections";
 import { formatDate } from "../../lib/format";
+import {
+  githubRepositoryPath,
+  githubTroubleshooting,
+} from "../../data/github-repos";
 
 const selectedCategory = Astro.url.searchParams.get("category");
 const entries = byNewest(publishedPosts(await getCollection("solutions")));
@@ -21,6 +25,11 @@ const categories = [...new Set(entries.map((entry) => entry.data.category))];
     </p>
   </header>
 
+  <section>
+    <div class="home-section-heading">
+      <h2>站內整理</h2>
+      <span>依分類</span>
+    </div>
   <div class="filter-strip" style="display:flex;flex-wrap:wrap;gap:0.5rem;margin-bottom:1.4rem">
     <a class:list={["tag-pill", !selectedCategory && "tag-pill-accent"]} href="/solutions">全部</a>
     {categories.map((category) => (
@@ -53,4 +62,28 @@ const categories = [...new Set(entries.map((entry) => entry.data.category))];
       ))}
     </div>
   )}
+  </section>
+
+  <section class="section">
+    <div class="home-section-heading">
+      <h2>GitHub 上的問題紀錄</h2>
+      <span>建置時從 GitHub 同步</span>
+    </div>
+    <div class="article-list">
+      {githubTroubleshooting.map((repository) => (
+        <a class="article-row" href={githubRepositoryPath(repository)}>
+          <time class="article-row-date" datetime={repository.pushedAt}>
+            {formatDate(repository.pushedAt)}
+          </time>
+          <span class="article-row-body">
+            <span class="article-row-kind">Repository</span>
+            <strong>{repository.title}</strong>
+            <span>{repository.description}</span>
+            <span class="article-row-tags">{repository.topics.slice(0, 4).join(" · ")}</span>
+          </span>
+          <span class="article-row-arrow">↗</span>
+        </a>
+      ))}
+    </div>
+  </section>
 </BaseLayout>

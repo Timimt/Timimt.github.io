@@ -5,6 +5,10 @@ import { byNewest, publishedPosts, readingTime } from "../lib/collections";
 import { formatDate } from "../lib/format";
 import { knowledgeFacts } from "../data/knowledge";
 import { site } from "../data/site";
+import {
+  githubRepositories,
+  githubRepositoryPath,
+} from "../data/github-repos";
 
 const solutions = byNewest(publishedPosts(await getCollection("solutions")));
 const projects = byNewest(publishedPosts(await getCollection("projects")));
@@ -71,6 +75,34 @@ function collectionLabel(collection: string): string {
     </div>
   </section>
 
+  <section class="home-section">
+    <div class="home-section-heading">
+      <h2>GitHub 最近更新</h2>
+      <span>{githubRepositories.length} 個 Repository</span>
+    </div>
+    <div class="article-list">
+      {githubRepositories.map((repository) => (
+        <a class="article-row" href={githubRepositoryPath(repository)}>
+          <time class="article-row-date" datetime={repository.pushedAt}>
+            {formatDate(repository.pushedAt)}
+          </time>
+          <span class="article-row-body">
+            <span class="article-row-kind">
+              {repository.kind === "troubleshooting" ? "問題紀錄" : "專案"}
+            </span>
+            <strong>{repository.title}</strong>
+            <span>{repository.description}</span>
+            <span class="article-row-tags">
+              {repository.language ?? "Repository"}
+              {repository.topics.length ? ` · ${repository.topics.slice(0, 3).join(" · ")}` : ""}
+            </span>
+          </span>
+          <span class="article-row-arrow">↗</span>
+        </a>
+      ))}
+    </div>
+  </section>
+
   <section class="home-mosaic">
     <div class="now-block">
       <p class="section-label">現在</p>
@@ -96,12 +128,16 @@ function collectionLabel(collection: string): string {
       <p>
         大學生活、走過的地方、突然想到的事，也會放在這裡。生活不是技術文章旁邊的裝飾。
       </p>
-      {journal.slice(0, 2).map((entry) => (
-        <a class="plain-link-row" href={`/journal/${entry.id}/`}>
-          <span>{entry.data.title}</span>
-          <span>{formatDate(entry.data.pubDate)}</span>
-        </a>
-      ))}
+      {journal.length === 0 ? (
+        <p>目前還沒有文章。等真的有想留下的東西，再放進來。</p>
+      ) : (
+        journal.slice(0, 2).map((entry) => (
+          <a class="plain-link-row" href={`/journal/${entry.id}/`}>
+            <span>{entry.data.title}</span>
+            <span>{formatDate(entry.data.pubDate)}</span>
+          </a>
+        ))
+      )}
       <a class="text-link" href="/journal">看全部生活隨筆 →</a>
     </div>
   </section>
