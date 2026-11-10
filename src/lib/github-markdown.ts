@@ -1,5 +1,6 @@
-import { marked } from "marked";
+import { marked, Renderer } from "marked";
 import sanitizeHtml from "sanitize-html";
+import { slugify } from "./format";
 
 export async function renderGithubMarkdown(
   markdown: string,
@@ -7,9 +8,19 @@ export async function renderGithubMarkdown(
   branch: string,
 ): Promise<string> {
   const baseUrl = `${repositoryUrl}/blob/${branch}/`;
+  const renderer = new Renderer();
+  renderer.heading = function heading({ tokens, depth }) {
+    const inline = this.parser.parseInline(tokens);
+    const plainText = sanitizeHtml(inline, {
+      allowedTags: [],
+      allowedAttributes: {},
+    });
+    return `<h${depth} id="${slugify(plainText)}">${inline}</h${depth}>\n`;
+  };
   const rendered = await marked.parse(markdown, {
     gfm: true,
     breaks: false,
+    renderer,
   });
 
   return sanitizeHtml(rendered, {
