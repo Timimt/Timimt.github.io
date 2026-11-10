@@ -7,12 +7,12 @@ import { byNewest, publishedPosts } from "../../lib/collections";
 const entries = byNewest(publishedPosts(await getCollection("projects")));
 ---
 
-<BaseLayout title="Projects" description="實際開發或參與的專案：目的、技術、架構、挑戰與成果。">
+<BaseLayout title="做過的東西" description="自己做過或在做的專案，有成品也有半成品。">
   <header class="page-heading">
-    <p class="page-kicker">Projects</p>
-    <h1 class="page-title">個人專案</h1>
+    <p class="page-kicker">我的專案</p>
+    <h1 class="page-title">做過的東西</h1>
     <p class="page-description">
-      不只放截圖與連結，也記錄每個專案的開發動機、架構決策與遇到的挑戰。
+      有些做完了，有些還在做。比起貼截圖，我更想記下當時為什麼這樣做、卡在哪裡。
     </p>
   </header>
 

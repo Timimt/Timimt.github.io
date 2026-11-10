@@ -14,11 +14,11 @@ const canonical = new URL(Astro.url.pathname, site.url);
 const fullTitle = title === site.title ? title : `${title} · ${site.shortTitle}`;
 
 const navItems = [
-  { href: "/about", label: "About" },
-  { href: "/knowledge", label: "Knowledge" },
-  { href: "/solutions", label: "Solutions" },
-  { href: "/projects", label: "Projects" },
-  { href: "/notes", label: "Notes" },
+  { href: "/about", label: "關於" },
+  { href: "/knowledge", label: "知識庫" },
+  { href: "/solutions", label: "踩坑" },
+  { href: "/projects", label: "專案" },
+  { href: "/notes", label: "筆記" },
 ];
 ---
 
@@ -54,7 +54,7 @@ const navItems = [
     <header class="site-header">
       <div class="site-header-inner">
         <a class="brand" href="/">
-          <span class="brand-mark">T.</span>
+          <span class="brand-mark">yz</span>
           <span>{site.shortTitle}</span>
         </a>
         <nav class="site-nav" aria-label="主要導覽">
@@ -90,12 +90,12 @@ const navItems = [
 
     <footer class="site-footer">
       <div class="site-footer-inner">
-        <span>© {new Date().getFullYear()} {site.shortTitle} · 以 GitHub 為內容來源的個人技術基地</span>
+        <span>© {new Date().getFullYear()} {site.shortTitle} · 內容都在 GitHub 上，想改什麼就直接改 Markdown</span>
         <nav aria-label="頁尾連結">
           <a href={site.github} target="_blank" rel="noreferrer noopener">GitHub</a>
           <a href={site.knowledge} target="_blank" rel="noreferrer noopener">CS Daily Knowledge</a>
           <a href="/rss.xml">RSS</a>
-          <a href="/search">Search</a>
+          <a href="/search">搜尋</a>
         </nav>
       </div>
     </footer>

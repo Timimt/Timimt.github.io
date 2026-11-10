@@ -3,11 +3,10 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 import { about } from "../data/about";
 ---
 
-<BaseLayout title="About Me" description="關於 Timimt：資工系大一學生，往資訊安全方向累積的技術基地。">
+<BaseLayout title="關於我" description="關於宇奕_zoran：一個正在唸資工、對資安很有興趣的學生。">
   <header class="page-heading">
-    <p class="page-kicker">About Me</p>
+    <p class="page-kicker">關於我</p>
     <h1 class="page-title">嗨，我是 {about.name}</h1>
-    <p class="page-description">{about.role}</p>
   </header>
 
   <div class="prose">
@@ -15,14 +14,14 @@ import { about } from "../data/about";
   </div>
 
   <section class="section">
-    <h2>正在做的事</h2>
+    <h2>最近在忙</h2>
     <ul class="about-list">
       {about.now.map((item) => <li><span>{item}</span></li>)}
     </ul>
   </section>
 
   <section class="section">
-    <h2>技術興趣</h2>
+    <h2>有興趣的方向</h2>
     <div class="card-grid">
       {about.interests.map((item) => (
         <article class="post-card"><p style="margin:0">{item}</p></article>
@@ -31,14 +30,14 @@ import { about } from "../data/about";
   </section>
 
   <section class="section">
-    <h2>使用中的技術與工具</h2>
+    <h2>手上常用的東西</h2>
     <ul class="about-list">
       {about.tools.map((item) => <li><span>{item}</span></li>)}
     </ul>
   </section>
 
   <section class="section">
-    <h2>未來想研究的方向</h2>
+    <h2>之後想碰的</h2>
     <ul class="about-list">
       {about.future.map((item) => <li><span>{item}</span></li>)}
     </ul>
@@ -46,8 +45,8 @@ import { about } from "../data/about";
 
   <section class="section">
     <div class="hero-actions">
-      <a class="button button-primary" href={about.github} target="_blank" rel="noreferrer noopener">GitHub →</a>
-      <a class="button button-secondary" href="/projects">我的專案</a>
+      <a class="button button-primary" href={about.github} target="_blank" rel="noreferrer noopener">GitHub</a>
+      <a class="button button-secondary" href="/projects">看我的專案</a>
     </div>
   </section>
 </BaseLayout>

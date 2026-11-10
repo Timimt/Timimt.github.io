@@ -1,10 +1,10 @@
 export const site = {
-  title: "Timimt · CS 與資安成長筆記",
-  shortTitle: "Timimt",
+  title: "宇奕_zoran 的技術筆記",
+  shortTitle: "宇奕_zoran",
   description:
-    "資工系大一學生的個人技術基地：資訊安全知識、實戰問題解決、專案紀錄與學習筆記。",
+    "宇奕_zoran 的個人網站：一些學習筆記、踩過的坑、做過的東西，以及他對資訊安全的好奇。",
   url: "https://timimt.github.io",
   github: "https://github.com/Timimt",
   knowledge: "https://timimt.github.io/cs-daily-knowledge-content/",
-  author: "Timimt",
+  author: "宇奕_zoran",
 };

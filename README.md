@@ -1,6 +1,6 @@
 # Timimt.github.io
 
-我的個人技術 Blog：About、CS Daily Knowledge 入口、Problem & Solutions、Projects 與 Learning Notes。
+宇奕_zoran 的個人技術 Blog：關於我、CS Daily Knowledge 入口、踩坑紀錄、專案與學習筆記。
 
 - 框架：Astro + TypeScript + CSS design tokens
 - 內容：`src/content/` 的 Markdown（GitHub 是內容唯一權威來源）

@@ -3,22 +3,22 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 import { knowledgeFacts, knowledgeSpotlight } from "../data/knowledge";
 ---
 
-<BaseLayout title="CS Daily Knowledge" description="Timimt 的系統化資安與資工知識庫入口。">
+<BaseLayout title="CS Daily Knowledge" description="宇奕_zoran 另外維護的每日資安教材站，這裡是入口與精選。">
   <header class="page-heading">
-    <p class="page-kicker">Knowledge</p>
+    <p class="page-kicker">我的另一個站</p>
     <h1 class="page-title">CS Daily Knowledge</h1>
     <p class="page-description">
-      每天一篇資安與資工教材，有圖解與測驗。這是獨立的知識庫網站，這裡只做介紹與精選連結。
+      每天一篇資安教材，有圖有測驗。它自己住一個 Repository，這裡只放介紹跟幾篇精選。
     </p>
   </header>
 
   <section class="note-box">
-    目前有 {knowledgeFacts.publishedLessons} 篇已發布教材。文章、測驗與進度都保存在原知識庫，兩個網站互相連結但不互相依賴。
+    目前有 {knowledgeFacts.publishedLessons} 篇。兩個站互相放連結，但誰掛了都不影響另一個。
   </section>
 
   <section class="section">
     <div class="section-heading">
-      <h2>精選教材</h2>
+      <h2>先看這幾篇</h2>
       <a href={knowledgeFacts.url} target="_blank" rel="noreferrer noopener">進入完整知識庫 →</a>
     </div>
     <div class="card-grid">
@@ -34,7 +34,7 @@ import { knowledgeFacts, knowledgeSpotlight } from "../data/knowledge";
 
   <section class="section">
     <div class="section-heading">
-      <h2>相關連結</h2>
+      <h2>連結</h2>
     </div>
     <div class="hero-actions">
       <a class="button button-secondary" href={knowledgeFacts.repository} target="_blank" rel="noreferrer noopener">GitHub Repository</a>

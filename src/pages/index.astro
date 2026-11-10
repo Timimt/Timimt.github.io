@@ -15,14 +15,14 @@ const latest = byNewest([...solutions, ...projects, ...notes]).slice(0, 6);
 <BaseLayout title={site.title}>
   <section class="hero">
     <div class="hero-inner">
-      <p class="hero-kicker">Timimt · CS 與資安成長基地</p>
-      <h1 class="hero-title">把學到的、踩過的、做出來的，全部留下來。</h1>
+      <p class="hero-kicker">你好，我是宇奕_zoran</p>
+      <h1 class="hero-title">這裡放我的筆記、踩過的坑，還有幾個自己做的東西。</h1>
       <p class="hero-copy">
-        資工系大一學生的個人技術站。這裡有資安知識庫、真實的問題解決紀錄、專案過程與學習筆記，全部以 GitHub 為內容來源。
+        寫得很慢，但每一篇都是我真的碰過的。有資安教材、修到半夜的奇怪問題，也有做到一半的專案。
       </p>
       <div class="hero-actions">
-        <a class="button button-primary" href="/about">認識我 →</a>
-        <a class="button button-ghost" href="/solutions">問題與解法</a>
+        <a class="button button-primary" href="/about">關於我</a>
+        <a class="button button-ghost" href="/solutions">看問題紀錄</a>
         <a class="button button-ghost" href={site.knowledge} target="_blank" rel="noreferrer noopener">CS Daily Knowledge</a>
       </div>
     </div>
@@ -30,8 +30,8 @@ const latest = byNewest([...solutions, ...projects, ...notes]).slice(0, 6);
 
   <section class="section">
     <div class="section-heading">
-      <h2>最新文章</h2>
-      <a href="/solutions">全部文章 →</a>
+      <h2>最近寫的</h2>
+      <a href="/solutions">全部 →</a>
     </div>
     <div class="card-grid">
       {latest.map((entry) => {
@@ -62,11 +62,11 @@ const latest = byNewest([...solutions, ...projects, ...notes]).slice(0, 6);
 
   <section class="section">
     <div class="section-heading">
-      <h2>CS Daily Knowledge</h2>
+      <h2>我另外維護的知識庫</h2>
       <a href={knowledgeFacts.url} target="_blank" rel="noreferrer noopener">前往知識庫 →</a>
     </div>
     <p class="note-box">
-      我的系統化資安教材網站，目前有 {knowledgeFacts.publishedLessons} 篇教材與測驗。主 Blog 只做精選與外連，內容仍以原 Repository 為唯一權威來源。
+      這是一個每天一篇的資安教材站，目前有 {knowledgeFacts.publishedLessons} 篇，每篇都有我畫的圖跟測驗。這裡只放幾篇我覺得值得先看的，完整內容在那個站上。
     </p>
     <div class="card-grid" style="margin-top: 1rem">
       {knowledgeSpotlight.map((lesson) => (
@@ -81,7 +81,7 @@ const latest = byNewest([...solutions, ...projects, ...notes]).slice(0, 6);
 
   <section class="section">
     <div class="section-heading">
-      <h2>精選專案</h2>
+      <h2>做過的東西</h2>
       <a href="/projects">所有專案 →</a>
     </div>
     <div class="card-grid">
