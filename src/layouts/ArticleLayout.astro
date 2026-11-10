@@ -13,6 +13,15 @@ interface Props {
   kind: string;
   toc: TocHeading[];
   tagBase: string;
+  readingTime: number;
+  backHref: string;
+  backLabel: string;
+  related?: Array<{
+    title: string;
+    description: string;
+    url: string;
+    kind: string;
+  }>;
   repository?: string;
   sources?: string[];
   links?: Array<{ label: string; url: string }>;
@@ -27,6 +36,10 @@ const {
   kind,
   toc,
   tagBase,
+  readingTime,
+  backHref,
+  backLabel,
+  related = [],
   repository,
   sources,
   links,
@@ -34,17 +47,19 @@ const {
 ---
 
 <BaseLayout title={title} description={description} ogType="article">
+  <a class="back-link" href={backHref}>← {backLabel}</a>
   <div class="split-layout">
     <article>
       <header class="article-header">
-        <div class="page-kicker">{kind}</div>
         <h1>{title}</h1>
         <p class="lead">{description}</p>
         <div class="article-meta">
-          <time datetime={pubDate.toISOString()}>發布 {formatDate(pubDate)}</time>
-          {updatedDate && <time datetime={updatedDate.toISOString()}>更新 {formatDate(updatedDate)}</time>}
-          <TagList tags={tags} base={tagBase} />
+          <span>{kind}</span>
+          <time datetime={pubDate.toISOString()}>{formatDate(pubDate)}</time>
+          {updatedDate && <time datetime={updatedDate.toISOString()}>改於 {formatDate(updatedDate)}</time>}
+          <span>約 {readingTime} 分鐘</span>
         </div>
+        <TagList tags={tags} base={tagBase} />
       </header>
 
       <div class="prose">
@@ -63,6 +78,26 @@ const {
           ))}
         </section>
       )}
+
+      {related.length > 0 && (
+        <section class="related-articles" aria-labelledby="related-title">
+          <h2 id="related-title">再讀一點</h2>
+          <div class="article-list">
+            {related.map((item) => (
+              <a class="article-row" href={item.url}>
+                <span class="article-row-kind">{item.kind}</span>
+                <span class="article-row-body">
+                  <strong>{item.title}</strong>
+                  <span>{item.description}</span>
+                </span>
+                <span class="article-row-arrow">↗</span>
+              </a>
+            ))}
+          </div>
+        </section>
+      )}
+
+      <a class="back-link back-link-bottom" href={backHref}>← {backLabel}</a>
     </article>
 
     {toc.length > 0 && (

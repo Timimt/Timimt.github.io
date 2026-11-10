@@ -2,6 +2,7 @@
 import { getCollection, render } from "astro:content";
 import ArticleLayout from "../../layouts/ArticleLayout.astro";
 import { extractHeadings } from "../../lib/headings";
+import { readingTime } from "../../lib/collections";
 
 export async function getStaticPaths() {
   const entries = await getCollection("notes");
@@ -16,6 +17,21 @@ export async function getStaticPaths() {
 const { entry } = Astro.props;
 const { Content } = await render(entry);
 const headings = extractHeadings(entry.body ?? "");
+const all = (await getCollection("notes")).filter((item) => item.data.status !== "draft");
+const related = all
+  .filter((item) => item.id !== entry.id)
+  .map((item) => ({
+    item,
+    score: item.data.tags.filter((tag) => entry.data.tags.includes(tag)).length,
+  }))
+  .sort((left, right) => right.score - left.score)
+  .slice(0, 2)
+  .map(({ item }) => ({
+    title: item.data.title,
+    description: item.data.description,
+    url: `/notes/${item.id}/`,
+    kind: item.data.course ?? "筆記",
+  }));
 ---
 
 <ArticleLayout
@@ -27,6 +43,10 @@ const headings = extractHeadings(entry.body ?? "");
   kind={entry.data.course ?? "筆記"}
   toc={headings}
   tagBase="/notes"
+  readingTime={readingTime(entry.body ?? "")}
+  backHref="/notes"
+  backLabel="回到學習筆記"
+  related={related}
   repository={entry.data.relatedKnowledge}
 >
   <Content />

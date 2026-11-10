@@ -1,8 +1,8 @@
 export const site = {
-  title: "宇奕_zoran 的技術筆記",
+  title: "宇奕_zoran",
   shortTitle: "宇奕_zoran",
   description:
-    "宇奕_zoran 的個人網站：一些學習筆記、踩過的坑、做過的東西，以及他對資訊安全的好奇。",
+    "宇奕_zoran 的個人部落格。記下學過的東西、遇過的問題、做過的專案，還有一些生活裡的想法。",
   url: "https://timimt.github.io",
   github: "https://github.com/Timimt",
   knowledge: "https://timimt.github.io/cs-daily-knowledge-content/",

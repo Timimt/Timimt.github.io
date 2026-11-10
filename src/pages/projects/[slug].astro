@@ -2,6 +2,7 @@
 import { getCollection, render } from "astro:content";
 import ArticleLayout from "../../layouts/ArticleLayout.astro";
 import { extractHeadings } from "../../lib/headings";
+import { readingTime } from "../../lib/collections";
 
 export async function getStaticPaths() {
   const entries = await getCollection("projects");
@@ -16,6 +17,15 @@ export async function getStaticPaths() {
 const { entry } = Astro.props;
 const { Content } = await render(entry);
 const headings = extractHeadings(entry.body ?? "");
+const notes = (await getCollection("notes"))
+  .filter((item) => item.data.status !== "draft")
+  .slice(0, 2)
+  .map((item) => ({
+    title: item.data.title,
+    description: item.data.description,
+    url: `/notes/${item.id}/`,
+    kind: "筆記",
+  }));
 ---
 
 <ArticleLayout
@@ -27,6 +37,10 @@ const headings = extractHeadings(entry.body ?? "");
   kind="專案"
   toc={headings}
   tagBase="/projects"
+  readingTime={readingTime(entry.body ?? "")}
+  backHref="/projects"
+  backLabel="回到專案列表"
+  related={notes}
   repository={entry.data.repo}
   links={entry.data.links}
 >

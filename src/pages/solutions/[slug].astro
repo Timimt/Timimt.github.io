@@ -2,7 +2,7 @@
 import { getCollection, render } from "astro:content";
 import ArticleLayout from "../../layouts/ArticleLayout.astro";
 import { extractHeadings } from "../../lib/headings";
-import { solutionCategoryLabel } from "../../lib/collections";
+import { readingTime, solutionCategoryLabel } from "../../lib/collections";
 
 export async function getStaticPaths() {
   const entries = await getCollection("solutions");
@@ -17,6 +17,24 @@ export async function getStaticPaths() {
 const { entry } = Astro.props;
 const { Content } = await render(entry);
 const headings = extractHeadings(entry.body ?? "");
+const all = (await getCollection("solutions")).filter((item) => item.data.status !== "draft");
+const related = all
+  .filter((item) => item.id !== entry.id)
+  .map((item) => ({
+    item,
+    score:
+      (item.data.category === entry.data.category ? 3 : 0) +
+      item.data.tags.filter((tag) => entry.data.tags.includes(tag)).length,
+  }))
+  .filter(({ score }) => score > 0)
+  .sort((left, right) => right.score - left.score)
+  .slice(0, 2)
+  .map(({ item }) => ({
+    title: item.data.title,
+    description: item.data.description,
+    url: `/solutions/${item.id}/`,
+    kind: solutionCategoryLabel(item.data.category),
+  }));
 ---
 
 <ArticleLayout
@@ -28,6 +46,10 @@ const headings = extractHeadings(entry.body ?? "");
   kind={solutionCategoryLabel(entry.data.category)}
   toc={headings}
   tagBase="/solutions"
+  readingTime={readingTime(entry.body ?? "")}
+  backHref="/solutions"
+  backLabel="回到問題紀錄"
+  related={related}
   repository={entry.data.repo}
   sources={entry.data.sources}
 >

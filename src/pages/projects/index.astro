@@ -1,8 +1,8 @@
 ---
 import { getCollection } from "astro:content";
 import BaseLayout from "../../layouts/BaseLayout.astro";
-import PostCard from "../../components/PostCard.astro";
 import { byNewest, publishedPosts } from "../../lib/collections";
+import { formatDate } from "../../lib/format";
 
 const entries = byNewest(publishedPosts(await getCollection("projects")));
 ---
@@ -19,17 +19,20 @@ const entries = byNewest(publishedPosts(await getCollection("projects")));
   {entries.length === 0 ? (
     <p class="empty-state">專案紀錄整理中。</p>
   ) : (
-    <div class="card-grid">
+    <div class="article-list">
       {entries.map((entry) => (
-        <PostCard
-          href={`/projects/${entry.id}/`}
-          title={entry.data.title}
-          description={entry.data.description}
-          pubDate={entry.data.pubDate}
-          tags={entry.data.tags}
-          kind="專案"
-          tagBase="/projects"
-        />
+        <a class="article-row" href={`/projects/${entry.id}/`}>
+          <time class="article-row-date" datetime={entry.data.pubDate.toISOString()}>
+            {formatDate(entry.data.pubDate)}
+          </time>
+          <span class="article-row-body">
+            <span class="article-row-kind">{entry.data.status === "active" ? "進行中" : "專案"}</span>
+            <strong>{entry.data.title}</strong>
+            <span>{entry.data.description}</span>
+            <span class="article-row-tags">{entry.data.stack.slice(0, 4).join(" · ")}</span>
+          </span>
+          <span class="article-row-arrow">↗</span>
+        </a>
       ))}
     </div>
   )}

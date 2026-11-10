@@ -7,8 +7,9 @@ export async function GET(context) {
   const solutions = publishedPosts(await getCollection("solutions"));
   const projects = publishedPosts(await getCollection("projects"));
   const notes = publishedPosts(await getCollection("notes"));
+  const journal = publishedPosts(await getCollection("journal"));
 
-  const items = [...solutions, ...projects, ...notes]
+  const items = [...solutions, ...projects, ...notes, ...journal]
     .sort(
       (left, right) =>
         (right.data.updatedDate ?? right.data.pubDate).getTime() -
@@ -19,7 +20,9 @@ export async function GET(context) {
         ? "solutions"
         : entry.collection === "projects"
           ? "projects"
-          : "notes";
+          : entry.collection === "journal"
+            ? "journal"
+            : "notes";
       return {
         title: entry.data.title,
         description: entry.data.description,

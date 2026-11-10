@@ -3,50 +3,47 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 import { about } from "../data/about";
 ---
 
-<BaseLayout title="關於我" description="關於宇奕_zoran：一個正在唸資工、對資安很有興趣的學生。">
-  <header class="page-heading">
-    <p class="page-kicker">關於我</p>
-    <h1 class="page-title">嗨，我是 {about.name}</h1>
+<BaseLayout title="關於我" description="關於宇奕_zoran：中原大學資訊工程學系學生，記錄學習、專案與生活。">
+  <header class="page-heading about-heading">
+    <p class="page-kicker">關於</p>
+    <h1 class="page-title">{about.name}</h1>
   </header>
 
-  <div class="prose">
+  <div class="about-story">
     <p>{about.intro}</p>
+
+    <h2>最近在做什麼</h2>
+    <p>
+      現在主要在做 CS Daily Knowledge。它原本只是一個本機的學習工具，後來慢慢加上教材管理、GitHub 同步，最後變成公開的靜態網站。
+    </p>
+    <p>
+      這個 Blog 則是另一個地方。技術文章適合放在知識庫，但開發過程、遇到的錯誤、日常想法，放在這裡比較自在。
+    </p>
+
+    <h2>我在學什麼</h2>
+    <p>
+      目前對資安、作業系統、軟體架構、網路、AI 應用和智慧家庭都有興趣。還有很多基礎沒補齊，所以文章裡會看到我查資料、猜錯、修正，再重新理解的過程。
+    </p>
+    <ul class="plain-list">
+      {about.interests.map((item) => <li>{item}</li>)}
+    </ul>
+
+    <h2>為什麼開這個網站</h2>
+    <p>
+      我希望能留下真實的學習痕跡。不是等變成專家之後才開始寫，而是把現在知道的、還不知道的，一起記錄下來。
+    </p>
+    <p>
+      過一段時間再回來，應該會發現有些想法已經不一樣。這也是我想保留這些文章的原因。
+    </p>
+
+    <h2>找到我</h2>
+    <p>
+      GitHub 是最容易找到我的地方。網站和大部分專案也都放在那裡。
+    </p>
+    <div class="plain-links">
+      <a href={about.github} target="_blank" rel="noreferrer noopener">GitHub ↗</a>
+      <a href="/projects">專案紀錄</a>
+      <a href="/rss.xml">RSS</a>
+    </div>
   </div>
-
-  <section class="section">
-    <h2>最近在忙</h2>
-    <ul class="about-list">
-      {about.now.map((item) => <li><span>{item}</span></li>)}
-    </ul>
-  </section>
-
-  <section class="section">
-    <h2>有興趣的方向</h2>
-    <div class="card-grid">
-      {about.interests.map((item) => (
-        <article class="post-card"><p style="margin:0">{item}</p></article>
-      ))}
-    </div>
-  </section>
-
-  <section class="section">
-    <h2>手上常用的東西</h2>
-    <ul class="about-list">
-      {about.tools.map((item) => <li><span>{item}</span></li>)}
-    </ul>
-  </section>
-
-  <section class="section">
-    <h2>之後想碰的</h2>
-    <ul class="about-list">
-      {about.future.map((item) => <li><span>{item}</span></li>)}
-    </ul>
-  </section>
-
-  <section class="section">
-    <div class="hero-actions">
-      <a class="button button-primary" href={about.github} target="_blank" rel="noreferrer noopener">GitHub</a>
-      <a class="button button-secondary" href="/projects">看我的專案</a>
-    </div>
-  </section>
 </BaseLayout>

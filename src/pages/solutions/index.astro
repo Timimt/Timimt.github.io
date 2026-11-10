@@ -1,8 +1,8 @@
 ---
 import { getCollection } from "astro:content";
 import BaseLayout from "../../layouts/BaseLayout.astro";
-import PostCard from "../../components/PostCard.astro";
 import { byNewest, publishedPosts, solutionCategoryLabel } from "../../lib/collections";
+import { formatDate } from "../../lib/format";
 
 const selectedCategory = Astro.url.searchParams.get("category");
 const entries = byNewest(publishedPosts(await getCollection("solutions")));
@@ -36,17 +36,20 @@ const categories = [...new Set(entries.map((entry) => entry.data.category))];
   {filtered.length === 0 ? (
     <p class="empty-state">這個分類還沒有文章。</p>
   ) : (
-    <div class="card-grid">
+    <div class="article-list">
       {filtered.map((entry) => (
-        <PostCard
-          href={`/solutions/${entry.id}/`}
-          title={entry.data.title}
-          description={entry.data.description}
-          pubDate={entry.data.pubDate}
-          tags={entry.data.tags}
-          kind={solutionCategoryLabel(entry.data.category)}
-          tagBase="/solutions"
-        />
+        <a class="article-row" href={`/solutions/${entry.id}/`}>
+          <time class="article-row-date" datetime={entry.data.pubDate.toISOString()}>
+            {formatDate(entry.data.pubDate)}
+          </time>
+          <span class="article-row-body">
+            <span class="article-row-kind">{solutionCategoryLabel(entry.data.category)}</span>
+            <strong>{entry.data.title}</strong>
+            <span>{entry.data.description}</span>
+            <span class="article-row-tags">{entry.data.tags.slice(0, 3).join(" · ")}</span>
+          </span>
+          <span class="article-row-arrow">↗</span>
+        </a>
       ))}
     </div>
   )}

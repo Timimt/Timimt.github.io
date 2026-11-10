@@ -6,6 +6,7 @@ import { publishedPosts } from "../lib/collections";
 const solutions = publishedPosts(await getCollection("solutions"));
 const projects = publishedPosts(await getCollection("projects"));
 const notes = publishedPosts(await getCollection("notes"));
+const journal = publishedPosts(await getCollection("journal"));
 
 const documents = [
   ...solutions.map((entry) => ({
@@ -32,6 +33,15 @@ const documents = [
     description: entry.data.description,
     tags: entry.data.tags,
     url: `/notes/${entry.id}/`,
+    date: entry.data.pubDate.toISOString(),
+    body: (entry.body ?? "").replace(/```[\s\S]*?```/g, " ").slice(0, 1200),
+  })),
+  ...journal.map((entry) => ({
+    kind: "生活",
+    title: entry.data.title,
+    description: entry.data.description,
+    tags: entry.data.tags,
+    url: `/journal/${entry.id}/`,
     date: entry.data.pubDate.toISOString(),
     body: (entry.body ?? "").replace(/```[\s\S]*?```/g, " ").slice(0, 1200),
   })),

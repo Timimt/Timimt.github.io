@@ -1,8 +1,8 @@
 ---
 import { getCollection } from "astro:content";
 import BaseLayout from "../../layouts/BaseLayout.astro";
-import PostCard from "../../components/PostCard.astro";
 import { byNewest, publishedPosts } from "../../lib/collections";
+import { formatDate } from "../../lib/format";
 
 const selectedTag = Astro.url.searchParams.get("tag");
 const entries = byNewest(publishedPosts(await getCollection("notes")));
@@ -32,17 +32,20 @@ const tags = [...new Set(entries.flatMap((entry) => entry.data.tags))];
   {filtered.length === 0 ? (
     <p class="empty-state">這個標籤還沒有筆記。</p>
   ) : (
-    <div class="card-grid">
+    <div class="article-list">
       {filtered.map((entry) => (
-        <PostCard
-          href={`/notes/${entry.id}/`}
-          title={entry.data.title}
-          description={entry.data.description}
-          pubDate={entry.data.pubDate}
-          tags={entry.data.tags}
-          kind={entry.data.course ?? "筆記"}
-          tagBase="/notes"
-        />
+        <a class="article-row" href={`/notes/${entry.id}/`}>
+          <time class="article-row-date" datetime={entry.data.pubDate.toISOString()}>
+            {formatDate(entry.data.pubDate)}
+          </time>
+          <span class="article-row-body">
+            <span class="article-row-kind">{entry.data.course ?? "筆記"}</span>
+            <strong>{entry.data.title}</strong>
+            <span>{entry.data.description}</span>
+            <span class="article-row-tags">{entry.data.tags.slice(0, 3).join(" · ")}</span>
+          </span>
+          <span class="article-row-arrow">↗</span>
+        </a>
       ))}
     </div>
   )}

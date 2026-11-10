@@ -14,11 +14,11 @@ const canonical = new URL(Astro.url.pathname, site.url);
 const fullTitle = title === site.title ? title : `${title} · ${site.shortTitle}`;
 
 const navItems = [
-  { href: "/about", label: "關於" },
-  { href: "/knowledge", label: "知識庫" },
-  { href: "/solutions", label: "踩坑" },
-  { href: "/projects", label: "專案" },
   { href: "/notes", label: "筆記" },
+  { href: "/solutions", label: "問題" },
+  { href: "/projects", label: "專案" },
+  { href: "/journal", label: "生活" },
+  { href: "/about", label: "關於" },
 ];
 ---
 
@@ -90,7 +90,7 @@ const navItems = [
 
     <footer class="site-footer">
       <div class="site-footer-inner">
-        <span>© {new Date().getFullYear()} {site.shortTitle} · 內容都在 GitHub 上，想改什麼就直接改 Markdown</span>
+        <span>© {new Date().getFullYear()} {site.shortTitle}。文章與網站都在 GitHub 上。</span>
         <nav aria-label="頁尾連結">
           <a href={site.github} target="_blank" rel="noreferrer noopener">GitHub</a>
           <a href={site.knowledge} target="_blank" rel="noreferrer noopener">CS Daily Knowledge</a>

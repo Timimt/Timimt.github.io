@@ -21,13 +21,16 @@ import { knowledgeFacts, knowledgeSpotlight } from "../data/knowledge";
       <h2>先看這幾篇</h2>
       <a href={knowledgeFacts.url} target="_blank" rel="noreferrer noopener">進入完整知識庫 →</a>
     </div>
-    <div class="card-grid">
+    <div class="article-list">
       {knowledgeSpotlight.map((lesson) => (
-        <article class="post-card">
-          <div class="post-card-meta"><span>{lesson.id}</span></div>
-          <h3><a href={lesson.url} target="_blank" rel="noreferrer noopener">{lesson.title}</a></h3>
-          <p>{lesson.summary}</p>
-        </article>
+        <a class="article-row" href={lesson.url} target="_blank" rel="noreferrer noopener">
+          <span class="article-row-date">{lesson.id}</span>
+          <span class="article-row-body">
+            <strong>{lesson.title}</strong>
+            <span>{lesson.summary}</span>
+          </span>
+          <span class="article-row-arrow">↗</span>
+        </a>
       ))}
     </div>
   </section>

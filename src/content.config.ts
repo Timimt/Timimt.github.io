@@ -57,4 +57,16 @@ const notes = defineCollection({
   }),
 });
 
-export const collections = { solutions, projects, notes };
+const journal = defineCollection({
+  loader: glob({
+    pattern: "**/*.md",
+    base: "./src/content/journal",
+    generateId: folderSlugId,
+  }),
+  schema: z.object({
+    ...postFields,
+    mood: z.string().max(40).optional(),
+  }),
+});
+
+export const collections = { solutions, projects, notes, journal };
