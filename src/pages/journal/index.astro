@@ -12,12 +12,12 @@ const entries = byNewest(publishedPosts(await getCollection("journal")));
     <p class="page-kicker">生活</p>
     <h1 class="page-title">生活與隨筆</h1>
     <p class="page-description">
-      這裡不是技術專欄。只是一些日常、走過的地方，還有當下覺得值得記下來的事。
+      一些日常小趣事
     </p>
   </header>
 
   {entries.length === 0 ? (
-    <p class="empty-state">還沒有生活隨筆。</p>
+    <p class="empty-state">還沒有生活隨筆</p>
   ) : (
     <div class="article-list">
       {entries.map((entry) => (
