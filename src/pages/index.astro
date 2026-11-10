@@ -1,35 +1,20 @@
 ---
 import { getCollection } from "astro:content";
 import BaseLayout from "../layouts/BaseLayout.astro";
-import { byNewest, publishedPosts, readingTime } from "../lib/collections";
+import { byNewest, publishedPosts } from "../lib/collections";
 import { formatDate } from "../lib/format";
 import { knowledgeFacts } from "../data/knowledge";
 import { site } from "../data/site";
 import {
+  githubProjects,
   githubRepositories,
   githubRepositoryPath,
 } from "../data/github-repos";
 
-const solutions = byNewest(publishedPosts(await getCollection("solutions")));
-const projects = byNewest(publishedPosts(await getCollection("projects")));
-const notes = byNewest(publishedPosts(await getCollection("notes")));
 const journal = byNewest(publishedPosts(await getCollection("journal")));
-const latest = byNewest([...solutions, ...projects, ...notes, ...journal]).slice(0, 8);
-const currentProject = projects.find((entry) => entry.id === "cs-daily-knowledge") ?? projects[0];
-
-function collectionPath(collection: string): string {
-  if (collection === "solutions") return "/solutions";
-  if (collection === "projects") return "/projects";
-  if (collection === "journal") return "/journal";
-  return "/notes";
-}
-
-function collectionLabel(collection: string): string {
-  if (collection === "solutions") return "問題";
-  if (collection === "projects") return "專案";
-  if (collection === "journal") return "生活";
-  return "筆記";
-}
+const currentProject =
+  githubRepositories.find((repository) => repository.name === "cs-daily-knowledge-content") ??
+  githubProjects[0];
 ---
 
 <BaseLayout title={site.title} description={site.description}>
@@ -51,33 +36,7 @@ function collectionLabel(collection: string): string {
 
   <section class="home-section">
     <div class="home-section-heading">
-      <h2>最近寫的</h2>
-      <span>從新到舊</span>
-    </div>
-    <div class="article-list">
-      {latest.map((entry) => (
-        <a class="article-row" href={`${collectionPath(entry.collection)}/${entry.id}/`}>
-          <time class="article-row-date" datetime={entry.data.pubDate.toISOString()}>
-            {formatDate(entry.data.pubDate)}
-          </time>
-          <span class="article-row-body">
-            <span class="article-row-kind">{collectionLabel(entry.collection)}</span>
-            <strong>{entry.data.title}</strong>
-            <span>{entry.data.description}</span>
-            <span class="article-row-tags">
-              {entry.data.tags.slice(0, 3).join(" · ")}
-              {entry.body ? ` · ${readingTime(entry.body)} 分鐘` : ""}
-            </span>
-          </span>
-          <span class="article-row-arrow">↗</span>
-        </a>
-      ))}
-    </div>
-  </section>
-
-  <section class="home-section">
-    <div class="home-section-heading">
-      <h2>GitHub 最近更新</h2>
+      <h2>GitHub 上的東西</h2>
       <span>{githubRepositories.length} 個 Repository</span>
     </div>
     <div class="article-list">
@@ -108,13 +67,11 @@ function collectionLabel(collection: string): string {
       <p class="section-label">現在</p>
       {currentProject ? (
         <>
-          <h2>{currentProject.data.title}</h2>
-          <p>{currentProject.data.description}</p>
+          <h2>{currentProject.title}</h2>
+          <p>{currentProject.description}</p>
           <div class="plain-links">
-            <a href={`/projects/${currentProject.id}/`}>專案紀錄</a>
-            {currentProject.data.links.map((link) => (
-              <a href={link.url} target="_blank" rel="noreferrer noopener">{link.label}</a>
-            ))}
+            <a href={githubRepositoryPath(currentProject)}>README</a>
+            <a href={currentProject.url} target="_blank" rel="noreferrer noopener">GitHub ↗</a>
           </div>
         </>
       ) : (

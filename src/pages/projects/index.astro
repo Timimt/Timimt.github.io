@@ -1,57 +1,24 @@
 ---
-import { getCollection } from "astro:content";
 import BaseLayout from "../../layouts/BaseLayout.astro";
-import { byNewest, publishedPosts } from "../../lib/collections";
 import { formatDate } from "../../lib/format";
 import {
   githubProjects,
   githubRepositoryPath,
 } from "../../data/github-repos";
-
-const entries = byNewest(publishedPosts(await getCollection("projects")));
 ---
 
-<BaseLayout title="做過的東西" description="自己做過或在做的專案">
+<BaseLayout title="專案" description="直接從 GitHub Repository 同步的專案列表。">
   <header class="page-heading">
-    <p class="page-kicker">我的專案</p>
-    <h1 class="page-title">做過的東西</h1>
+    <p class="page-kicker">GitHub 同步</p>
+    <h1 class="page-title">專案</h1>
     <p class="page-description">
-      有些是已經完成的作品，有些還在慢慢修改，做的時候遇到什麼問題、最後怎麼解決，如果有值得記下來的就會放在這裡
+      這裡的資料直接來自 GitHub，包括專案描述、語言、Topics、最後更新時間與 README。
     </p>
   </header>
 
-  <section>
-    <div class="home-section-heading">
-      <h2>站內深入紀錄</h2>
-      <span>手寫整理</span>
-    </div>
-    {entries.length === 0 ? (
-      <p class="empty-state">還沒有站內專案紀錄。</p>
-    ) : (
-      <div class="article-list">
-        {entries.map((entry) => (
-          <a class="article-row" href={`/projects/${entry.id}/`}>
-            <time class="article-row-date" datetime={entry.data.pubDate.toISOString()}>
-              {formatDate(entry.data.pubDate)}
-            </time>
-            <span class="article-row-body">
-              <span class="article-row-kind">{entry.data.status === "active" ? "進行中" : "專案"}</span>
-              <strong>{entry.data.title}</strong>
-              <span>{entry.data.description}</span>
-              <span class="article-row-tags">{entry.data.stack.slice(0, 4).join(" · ")}</span>
-            </span>
-            <span class="article-row-arrow">↗</span>
-          </a>
-        ))}
-      </div>
-    )}
-  </section>
-
-  <section class="section">
-    <div class="home-section-heading">
-      <h2>GitHub Repositories</h2>
-      <span>建置時從 GitHub 同步</span>
-    </div>
+  {githubProjects.length === 0 ? (
+    <p class="empty-state">目前沒有公開的專案 Repository。</p>
+  ) : (
     <div class="article-list">
       {githubProjects.map((repository) => (
         <a class="article-row" href={githubRepositoryPath(repository)}>
@@ -59,7 +26,7 @@ const entries = byNewest(publishedPosts(await getCollection("projects")));
             {formatDate(repository.pushedAt)}
           </time>
           <span class="article-row-body">
-            <span class="article-row-kind">{repository.language ?? "Repository"}</span>
+            <span class="article-row-kind">{repository.language ?? "GitHub Repository"}</span>
             <strong>{repository.title}</strong>
             <span>{repository.description}</span>
             <span class="article-row-tags">{repository.topics.slice(0, 4).join(" · ")}</span>
@@ -68,5 +35,5 @@ const entries = byNewest(publishedPosts(await getCollection("projects")));
         </a>
       ))}
     </div>
-  </section>
+  )}
 </BaseLayout>

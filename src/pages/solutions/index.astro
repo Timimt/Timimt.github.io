@@ -1,74 +1,24 @@
 ---
-import { getCollection } from "astro:content";
 import BaseLayout from "../../layouts/BaseLayout.astro";
-import { byNewest, publishedPosts, solutionCategoryLabel } from "../../lib/collections";
 import { formatDate } from "../../lib/format";
 import {
   githubRepositoryPath,
   githubTroubleshooting,
 } from "../../data/github-repos";
-
-const selectedCategory = Astro.url.searchParams.get("category");
-const entries = byNewest(publishedPosts(await getCollection("solutions")));
-const filtered = selectedCategory
-  ? entries.filter((entry) => entry.data.category === selectedCategory)
-  : entries;
-const categories = [...new Set(entries.map((entry) => entry.data.category))];
 ---
 
-<BaseLayout title="問題與解法" description="真的修到卡住過的問題，以及最後怎麼解決。">
+<BaseLayout title="問題紀錄" description="GitHub 上實際記錄過的問題排查與解決過程。">
   <header class="page-heading">
-    <p class="page-kicker">踩坑紀錄</p>
-    <h1 class="page-title">問題與解決方案</h1>
+    <p class="page-kicker">GitHub 同步</p>
+    <h1 class="page-title">問題紀錄</h1>
     <p class="page-description">
-      我不寫那種一路順利的教程。這裡的每一篇，都是我實際遇到、卡住、最後想辦法修好的問題。
+      這裡直接列出我 GitHub 上跟問題排查有關的 Repository。內容會在網站建置時同步。
     </p>
   </header>
 
-  <section>
-    <div class="home-section-heading">
-      <h2>站內整理</h2>
-      <span>依分類</span>
-    </div>
-  <div class="filter-strip" style="display:flex;flex-wrap:wrap;gap:0.5rem;margin-bottom:1.4rem">
-    <a class:list={["tag-pill", !selectedCategory && "tag-pill-accent"]} href="/solutions">全部</a>
-    {categories.map((category) => (
-      <a
-        class:list={["tag-pill", selectedCategory === category && "tag-pill-accent"]}
-        href={`/solutions?category=${category}`}
-      >
-        {solutionCategoryLabel(category)}
-      </a>
-    ))}
-  </div>
-
-  {filtered.length === 0 ? (
-    <p class="empty-state">這個分類還沒有文章。</p>
+  {githubTroubleshooting.length === 0 ? (
+    <p class="empty-state">目前沒有公開的問題紀錄 Repository。</p>
   ) : (
-    <div class="article-list">
-      {filtered.map((entry) => (
-        <a class="article-row" href={`/solutions/${entry.id}/`}>
-          <time class="article-row-date" datetime={entry.data.pubDate.toISOString()}>
-            {formatDate(entry.data.pubDate)}
-          </time>
-          <span class="article-row-body">
-            <span class="article-row-kind">{solutionCategoryLabel(entry.data.category)}</span>
-            <strong>{entry.data.title}</strong>
-            <span>{entry.data.description}</span>
-            <span class="article-row-tags">{entry.data.tags.slice(0, 3).join(" · ")}</span>
-          </span>
-          <span class="article-row-arrow">↗</span>
-        </a>
-      ))}
-    </div>
-  )}
-  </section>
-
-  <section class="section">
-    <div class="home-section-heading">
-      <h2>GitHub 上的問題紀錄</h2>
-      <span>建置時從 GitHub 同步</span>
-    </div>
     <div class="article-list">
       {githubTroubleshooting.map((repository) => (
         <a class="article-row" href={githubRepositoryPath(repository)}>
@@ -76,7 +26,7 @@ const categories = [...new Set(entries.map((entry) => entry.data.category))];
             {formatDate(repository.pushedAt)}
           </time>
           <span class="article-row-body">
-            <span class="article-row-kind">Repository</span>
+            <span class="article-row-kind">{repository.language ?? "GitHub Repository"}</span>
             <strong>{repository.title}</strong>
             <span>{repository.description}</span>
             <span class="article-row-tags">{repository.topics.slice(0, 4).join(" · ")}</span>
@@ -85,5 +35,5 @@ const categories = [...new Set(entries.map((entry) => entry.data.category))];
         </a>
       ))}
     </div>
-  </section>
+  )}
 </BaseLayout>

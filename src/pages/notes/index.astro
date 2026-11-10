@@ -30,7 +30,7 @@ const tags = [...new Set(entries.flatMap((entry) => entry.data.tags))];
   </div>
 
   {filtered.length === 0 ? (
-    <p class="empty-state">這個標籤還沒有筆記。</p>
+    <p class="empty-state">目前還沒有學習筆記。</p>
   ) : (
     <div class="article-list">
       {filtered.map((entry) => (
