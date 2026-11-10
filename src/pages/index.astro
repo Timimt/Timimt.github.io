@@ -81,12 +81,11 @@ const currentProject =
 
     <div class="life-block">
       <p class="section-label">生活</p>
-      <h2>不是每篇都要跟程式有關</h2>
       <p>
-        大學生活、走過的地方、突然想到的事，也會放在這裡。生活不是技術文章旁邊的裝飾。
+        大學裡發生的事、偶爾出去走走的紀錄，還有一些當下覺得值得寫下來的想法都可能出現在這裡。
       </p>
       {journal.length === 0 ? (
-        <p>目前還沒有文章。等真的有想留下的東西，再放進來。</p>
+        <p>目前還沒有，嘿嘿 ❍⩊❍</p>
       ) : (
         journal.slice(0, 2).map((entry) => (
           <a class="plain-link-row" href={`/journal/${entry.id}/`}>
