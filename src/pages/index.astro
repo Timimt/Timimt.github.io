@@ -1,0 +1,101 @@
+---
+import { getCollection } from "astro:content";
+import BaseLayout from "../layouts/BaseLayout.astro";
+import PostCard from "../components/PostCard.astro";
+import { byNewest, publishedPosts } from "../lib/collections";
+import { knowledgeFacts, knowledgeSpotlight } from "../data/knowledge";
+import { site } from "../data/site";
+
+const solutions = byNewest(publishedPosts(await getCollection("solutions")));
+const projects = byNewest(publishedPosts(await getCollection("projects")));
+const notes = byNewest(publishedPosts(await getCollection("notes")));
+const latest = byNewest([...solutions, ...projects, ...notes]).slice(0, 6);
+---
+
+<BaseLayout title={site.title}>
+  <section class="hero">
+    <div class="hero-inner">
+      <p class="hero-kicker">Timimt · CS 與資安成長基地</p>
+      <h1 class="hero-title">把學到的、踩過的、做出來的，全部留下來。</h1>
+      <p class="hero-copy">
+        資工系大一學生的個人技術站。這裡有資安知識庫、真實的問題解決紀錄、專案過程與學習筆記，全部以 GitHub 為內容來源。
+      </p>
+      <div class="hero-actions">
+        <a class="button button-primary" href="/about">認識我 →</a>
+        <a class="button button-ghost" href="/solutions">問題與解法</a>
+        <a class="button button-ghost" href={site.knowledge} target="_blank" rel="noreferrer noopener">CS Daily Knowledge</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-heading">
+      <h2>最新文章</h2>
+      <a href="/solutions">全部文章 →</a>
+    </div>
+    <div class="card-grid">
+      {latest.map((entry) => {
+        const base = entry.collection === "solutions"
+          ? "/solutions"
+          : entry.collection === "projects"
+            ? "/projects"
+            : "/notes";
+        const kind = entry.collection === "solutions"
+          ? "問題解法"
+          : entry.collection === "projects"
+            ? "專案"
+            : "學習筆記";
+        return (
+          <PostCard
+            href={`${base}/${entry.id}/`}
+            title={entry.data.title}
+            description={entry.data.description}
+            pubDate={entry.data.pubDate}
+            tags={entry.data.tags}
+            kind={kind}
+            tagBase={base}
+          />
+        );
+      })}
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-heading">
+      <h2>CS Daily Knowledge</h2>
+      <a href={knowledgeFacts.url} target="_blank" rel="noreferrer noopener">前往知識庫 →</a>
+    </div>
+    <p class="note-box">
+      我的系統化資安教材網站，目前有 {knowledgeFacts.publishedLessons} 篇教材與測驗。主 Blog 只做精選與外連，內容仍以原 Repository 為唯一權威來源。
+    </p>
+    <div class="card-grid" style="margin-top: 1rem">
+      {knowledgeSpotlight.map((lesson) => (
+        <article class="post-card">
+          <div class="post-card-meta"><span>精選教材</span></div>
+          <h3><a href={lesson.url} target="_blank" rel="noreferrer noopener">{lesson.title}</a></h3>
+          <p>{lesson.summary}</p>
+        </article>
+      ))}
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-heading">
+      <h2>精選專案</h2>
+      <a href="/projects">所有專案 →</a>
+    </div>
+    <div class="card-grid">
+      {projects.slice(0, 2).map((entry) => (
+        <PostCard
+          href={`/projects/${entry.id}/`}
+          title={entry.data.title}
+          description={entry.data.description}
+          pubDate={entry.data.pubDate}
+          tags={entry.data.tags}
+          kind="專案"
+          tagBase="/projects"
+        />
+      ))}
+    </div>
+  </section>
+</BaseLayout>

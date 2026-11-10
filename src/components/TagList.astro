@@ -1,0 +1,18 @@
+---
+import { slugify } from "../lib/format";
+
+interface Props {
+  tags: string[];
+  base?: string;
+}
+
+const { tags, base = "/notes" } = Astro.props;
+---
+
+{
+  tags.map((tag) => (
+    <a class="tag-pill tag-pill-accent" href={`${base}?tag=${encodeURIComponent(slugify(tag))}`}>
+      {tag}
+    </a>
+  ))
+}

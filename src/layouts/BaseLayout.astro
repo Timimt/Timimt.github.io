@@ -1,0 +1,114 @@
+---
+import { site } from "../data/site";
+import ThemeToggle from "../components/ThemeToggle.astro";
+import "../styles/global.css";
+
+interface Props {
+  title: string;
+  description?: string;
+  ogType?: "website" | "article";
+}
+
+const { title, description = site.description, ogType = "website" } = Astro.props;
+const canonical = new URL(Astro.url.pathname, site.url);
+const fullTitle = title === site.title ? title : `${title} · ${site.shortTitle}`;
+
+const navItems = [
+  { href: "/about", label: "About" },
+  { href: "/knowledge", label: "Knowledge" },
+  { href: "/solutions", label: "Solutions" },
+  { href: "/projects", label: "Projects" },
+  { href: "/notes", label: "Notes" },
+];
+---
+
+<!doctype html>
+<html lang="zh-Hant">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{fullTitle}</title>
+    <meta name="description" content={description} />
+    <meta name="generator" content={Astro.generator} />
+    <meta name="color-scheme" content="light dark" />
+    <link rel="canonical" href={canonical} />
+    <meta property="og:type" content={ogType} />
+    <meta property="og:site_name" content={site.shortTitle} />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta name="twitter:card" content="summary" />
+    <link rel="alternate" type="application/rss+xml" title={site.title} href="/rss.xml" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <script is:inline>
+      (() => {
+        const saved = localStorage.getItem("timimt-theme");
+        const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+        document.documentElement.dataset.theme = saved === "light" || saved === "dark"
+          ? saved
+          : prefersDark ? "dark" : "light";
+      })();
+    </script>
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="site-header-inner">
+        <a class="brand" href="/">
+          <span class="brand-mark">T.</span>
+          <span>{site.shortTitle}</span>
+        </a>
+        <nav class="site-nav" aria-label="主要導覽">
+          {navItems.map((item) => (
+            <a href={item.href} aria-current={Astro.url.pathname.startsWith(item.href) ? "page" : undefined}>
+              {item.label}
+            </a>
+          ))}
+        </nav>
+        <div class="header-actions">
+          <ThemeToggle />
+          <details class="mobile-menu">
+            <summary class="icon-button" aria-label="開啟選單">
+              <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+                <path d="M4 7h16M4 12h16M4 17h16"></path>
+              </svg>
+            </summary>
+            <nav class="mobile-menu-panel" aria-label="行動版導覽">
+              {navItems.map((item) => (
+                <a href={item.href} aria-current={Astro.url.pathname.startsWith(item.href) ? "page" : undefined}>
+                  {item.label}
+                </a>
+              ))}
+            </nav>
+          </details>
+        </div>
+      </div>
+    </header>
+
+    <main class="site-main">
+      <slot />
+    </main>
+
+    <footer class="site-footer">
+      <div class="site-footer-inner">
+        <span>© {new Date().getFullYear()} {site.shortTitle} · 以 GitHub 為內容來源的個人技術基地</span>
+        <nav aria-label="頁尾連結">
+          <a href={site.github} target="_blank" rel="noreferrer noopener">GitHub</a>
+          <a href={site.knowledge} target="_blank" rel="noreferrer noopener">CS Daily Knowledge</a>
+          <a href="/rss.xml">RSS</a>
+          <a href="/search">Search</a>
+        </nav>
+      </div>
+    </footer>
+
+    <script is:inline>
+      const toggle = document.querySelector("[data-theme-toggle]");
+      if (toggle) {
+        toggle.addEventListener("click", () => {
+          const next = document.documentElement.dataset.theme === "dark" ? "light" : "dark";
+          document.documentElement.dataset.theme = next;
+          localStorage.setItem("timimt-theme", next);
+        });
+      }
+    </script>
+  </body>
+</html>

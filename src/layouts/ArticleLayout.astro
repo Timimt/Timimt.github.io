@@ -1,0 +1,81 @@
+---
+import BaseLayout from "./BaseLayout.astro";
+import TagList from "../components/TagList.astro";
+import { formatDate } from "../lib/format";
+import type { TocHeading } from "../lib/headings";
+
+interface Props {
+  title: string;
+  description: string;
+  pubDate: Date;
+  updatedDate?: Date;
+  tags: string[];
+  kind: string;
+  toc: TocHeading[];
+  tagBase: string;
+  repository?: string;
+  sources?: string[];
+  links?: Array<{ label: string; url: string }>;
+}
+
+const {
+  title,
+  description,
+  pubDate,
+  updatedDate,
+  tags,
+  kind,
+  toc,
+  tagBase,
+  repository,
+  sources,
+  links,
+} = Astro.props;
+---
+
+<BaseLayout title={title} description={description} ogType="article">
+  <div class="split-layout">
+    <article>
+      <header class="article-header">
+        <div class="page-kicker">{kind}</div>
+        <h1>{title}</h1>
+        <p class="lead">{description}</p>
+        <div class="article-meta">
+          <time datetime={pubDate.toISOString()}>發布 {formatDate(pubDate)}</time>
+          {updatedDate && <time datetime={updatedDate.toISOString()}>更新 {formatDate(updatedDate)}</time>}
+          <TagList tags={tags} base={tagBase} />
+        </div>
+      </header>
+
+      <div class="prose">
+        <slot />
+      </div>
+
+      {(repository || sources?.length) && (
+        <section class="source-list" aria-labelledby="sources-title">
+          <strong id="sources-title">參考與連結</strong>
+          {repository && <a href={repository} target="_blank" rel="noreferrer noopener">{repository}</a>}
+          {sources?.map((source) => (
+            <a href={source} target="_blank" rel="noreferrer noopener">{source}</a>
+          ))}
+          {links?.map((link) => (
+            <a href={link.url} target="_blank" rel="noreferrer noopener">{link.label} · {link.url}</a>
+          ))}
+        </section>
+      )}
+    </article>
+
+    {toc.length > 0 && (
+      <aside class="toc" aria-label="文章目錄">
+        <strong>On this page</strong>
+        <ol>
+          {toc.map((heading) => (
+            <li class:list={[heading.depth === 3 && "toc-h3"]}>
+              <a href={`#${heading.slug}`}>{heading.text}</a>
+            </li>
+          ))}
+        </ol>
+      </aside>
+    )}
+  </div>
+</BaseLayout>

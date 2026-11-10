@@ -1,0 +1,36 @@
+---
+import { getCollection } from "astro:content";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import PostCard from "../../components/PostCard.astro";
+import { byNewest, publishedPosts } from "../../lib/collections";
+
+const entries = byNewest(publishedPosts(await getCollection("projects")));
+---
+
+<BaseLayout title="Projects" description="實際開發或參與的專案：目的、技術、架構、挑戰與成果。">
+  <header class="page-heading">
+    <p class="page-kicker">Projects</p>
+    <h1 class="page-title">個人專案</h1>
+    <p class="page-description">
+      不只放截圖與連結，也記錄每個專案的開發動機、架構決策與遇到的挑戰。
+    </p>
+  </header>
+
+  {entries.length === 0 ? (
+    <p class="empty-state">專案紀錄整理中。</p>
+  ) : (
+    <div class="card-grid">
+      {entries.map((entry) => (
+        <PostCard
+          href={`/projects/${entry.id}/`}
+          title={entry.data.title}
+          description={entry.data.description}
+          pubDate={entry.data.pubDate}
+          tags={entry.data.tags}
+          kind="專案"
+          tagBase="/projects"
+        />
+      ))}
+    </div>
+  )}
+</BaseLayout>

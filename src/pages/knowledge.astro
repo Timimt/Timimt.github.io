@@ -1,0 +1,44 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { knowledgeFacts, knowledgeSpotlight } from "../data/knowledge";
+---
+
+<BaseLayout title="CS Daily Knowledge" description="Timimt 的系統化資安與資工知識庫入口。">
+  <header class="page-heading">
+    <p class="page-kicker">Knowledge</p>
+    <h1 class="page-title">CS Daily Knowledge</h1>
+    <p class="page-description">
+      每天一篇資安與資工教材，有圖解與測驗。這是獨立的知識庫網站，這裡只做介紹與精選連結。
+    </p>
+  </header>
+
+  <section class="note-box">
+    目前有 {knowledgeFacts.publishedLessons} 篇已發布教材。文章、測驗與進度都保存在原知識庫，兩個網站互相連結但不互相依賴。
+  </section>
+
+  <section class="section">
+    <div class="section-heading">
+      <h2>精選教材</h2>
+      <a href={knowledgeFacts.url} target="_blank" rel="noreferrer noopener">進入完整知識庫 →</a>
+    </div>
+    <div class="card-grid">
+      {knowledgeSpotlight.map((lesson) => (
+        <article class="post-card">
+          <div class="post-card-meta"><span>{lesson.id}</span></div>
+          <h3><a href={lesson.url} target="_blank" rel="noreferrer noopener">{lesson.title}</a></h3>
+          <p>{lesson.summary}</p>
+        </article>
+      ))}
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-heading">
+      <h2>相關連結</h2>
+    </div>
+    <div class="hero-actions">
+      <a class="button button-secondary" href={knowledgeFacts.repository} target="_blank" rel="noreferrer noopener">GitHub Repository</a>
+      <a class="button button-secondary" href={knowledgeFacts.url} target="_blank" rel="noreferrer noopener">正式網站</a>
+    </div>
+  </section>
+</BaseLayout>
