@@ -39,7 +39,7 @@ jobs:
           enablement: true
 
       - name: Build site
-        run: pnpm build
+        run: npm run build
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
