@@ -8,32 +8,26 @@ export type KnowledgeSpotlight = {
 export const knowledgeFacts = {
   url: "https://timimt.github.io/cs-daily-knowledge-content/",
   repository: "https://github.com/Timimt/cs-daily-knowledge-content",
-  publishedLessons: 23,
+  publishedLessons: 3,
 };
 
 export const knowledgeSpotlight: KnowledgeSpotlight[] = [
   {
-    id: "day-005",
-    title: "雜湊函式與密碼儲存",
-    summary: "雜湊與加密的差別，以及為什麼密碼需要鹽與慢速雜湊。",
-    url: "https://timimt.github.io/cs-daily-knowledge-content/#/lessons/day-005",
+    id: "S-001",
+    title: "AES 與 RSA 的差異",
+    summary: "從對稱式與非對稱式加密的差異出發，理解兩者在混合式加密中的分工。",
+    url: "https://timimt.github.io/cs-daily-knowledge-content/#/lessons/S-001",
   },
   {
-    id: "day-009",
-    title: "TLS 握手與 HTTPS 的信任來源",
-    summary: "拆解 TLS 握手，搞懂瀏覽器鎖頭到底代表什麼。",
-    url: "https://timimt.github.io/cs-daily-knowledge-content/#/lessons/day-009",
+    id: "O-001",
+    title: "Windows Process 與 Windows API",
+    summary: "理解 Process、Thread、Handle 與使用者模式／核心模式邊界。",
+    url: "https://timimt.github.io/cs-daily-knowledge-content/#/lessons/O-001",
   },
   {
-    id: "day-015",
-    title: "SQL Injection 與參數化查詢",
-    summary: "從根本原因理解注入，並用參數化查詢把資料與指令分開。",
-    url: "https://timimt.github.io/cs-daily-knowledge-content/#/lessons/day-015",
-  },
-  {
-    id: "day-024",
-    title: "事件處理與 STRIDE 威脅建模",
-    summary: "事件處理的階段，以及開發前用 STRIDE 系統性找威脅。",
-    url: "https://timimt.github.io/cs-daily-knowledge-content/#/lessons/day-024",
+    id: "S-002",
+    title: "勒索病毒的混合式加密流程",
+    summary: "拆解勒索病毒如何結合 AES 與 RSA，並整理備份與事件處理的防禦重點。",
+    url: "https://timimt.github.io/cs-daily-knowledge-content/#/lessons/S-002",
   },
 ];

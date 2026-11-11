@@ -11,7 +11,7 @@ export const about = {
     "智慧家庭與人機互動",
   ],
   tools: ["React / Vite / TypeScript", "Node.js", "Git & GitHub", "PowerShell", "C/C++", "Astro"],
-  now: ["整理 CS Daily Knowledge 的教材與網站", "慢慢補齊這個 Blog 的文章", "練習把遇到的問題記錄下來"],
+  now: ["整理 CS Notes 的教材與網站", "慢慢補齊這個 Blog 的文章", "練習把遇到的問題記錄下來"],
   future: ["多理解資安工程的基本功", "把 AI 問答接到知識庫", "學好 Linux 與系統管理"],
   github: "https://github.com/Timimt",
 };
